@@ -1,1 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>魚偏愛 〜ベタなベタ、時々ミノカサゴ〜 | Gyohenai Art Gallery</title>
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --card: #141923;
+      --text: #e6edf3;
+      --sub: #8b949e;
+      --accent: #38bdf8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+      line-height: 1.6;
+    }
+    header {
+      text-align: center;
+      padding: 4rem 1.5rem 2.5rem;
+      border-bottom: 1px solid #1f2937;
+    }
+    header h1 {
+      font-size: 1.8rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+    header p.subtitle {
+      color: var(--accent);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+    header p.bio {
+      color: var(--sub);
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+      font-size: 0.9rem;
+    }
+    .links {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .links a {
+      text-decoration: none;
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid #30363d;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      transition: 0.2s;
+    }
+    .links a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+    }
+    .section-title {
+      font-size: 1.2rem;
+      margin-bottom: 1.2rem;
+      border-left: 3px solid var(--accent);
+      padding-left: 0.75rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 3.5rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+    .card img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      background: #ffffff;
+      display: block;
+    }
+    .card-info {
+      padding: 0.8rem 1rem;
+    }
+    .card-info .day {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+    .card-info .title {
+      font-size: 0.9rem;
+      margin-top: 0.15rem;
+    }
+    /* 拡大表示モーダル */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      padding: 1rem;
+    }
+    .modal.active { display: flex; }
+    .modal img {
+      max-width: 90vw;
+      max-height: 85vh;
+      background: #fff;
+      border-radius: 8px;
+    }
+    footer {
+      text-align: center;
+      color: var(--sub);
+      font-size: 0.8rem;
+      padding-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
 
+<header>
+  <h1>魚偏愛 〜ベタなベタ、時々ミノカサゴ〜</h1>
+  <p class="subtitle">1day1Betta &amp; Aquatic Sculptures</p>
+  <p class="bio">
+    魚とヒレの造形美を偏愛するクリエイターの記録。毎日1匹ベタを描く「#1day1Betta」と、透明樹脂粘土・すけるくんを用いた立体作品を公開しています。
+  </p>
+  <div class="links">
+    <a href="#" target="_blank">YouTube</a>
+    <a href="#" target="_blank">TikTok</a>
+    <a href="#" target="_blank">Instagram</a>
+    <a href="#" target="_blank">Commission / Shop</a>
+  </div>
+</header>
+
+<main>
+  <h2 class="section-title">#1day1Betta — Daily Illustrations</h2>
+  <div class="grid" id="betta-grid">
+    <!-- 画像を追加する時はこのブロックをコピー -->
+    <div class="card" onclick="openModal(this)">
+      <img src="images/day1.png" alt="Day 1 Betta">
+      <div class="card-info">
+        <div class="day">DAY 01</div>
+        <div class="title">Wild Betta — Pen Sketch</div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal(this)">
+      <img src="images/day2.png" alt="Day 2 Betta">
+      <div class="card-info">
+        <div class="day">DAY 02</div>
+        <div class="title">Halfmoon Betta — Side Profile</div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal(this)">
+      <img src="images/day3.png" alt="Day 3 Betta">
+      <div class="card-info">
+        <div class="day">DAY 03</div>
+        <div class="title">Veiltail Betta — Rising</div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal(this)">
+      <img src="images/day4.png" alt="Day 4 Betta">
+      <div class="card-info">
+        <div class="day">DAY 04</div>
+        <div class="title">Ink Wash Style — Sumi-e</div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal(this)">
+      <img src="images/day5.png" alt="Day 5 Betta">
+      <div class="card-info">
+        <div class="day">DAY 05</div>
+        <div class="title">Black &amp; Cobalt Study</div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal(this)">
+      <img src="images/day6.png" alt="Day 6 Betta">
+      <div class="card-info">
+        <div class="day">DAY 06</div>
+        <div class="title">Iridescent Blue Wild Betta</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">3D Sculptures — Clay &amp; Translucent Resin</h2>
+  <div class="grid">
+    <div class="card" onclick="openModal(this)">
+      <img src="images/lionfish.jpg" alt="ミノカサゴ">
+      <div class="card-info">
+        <div class="day">SCULPTURE</div>
+        <div class="title">ミノカサゴ / Lionfish</div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal(this)">
+      <img src="images/demekin.jpg" alt="クロデメキン">
+      <div class="card-info">
+        <div class="day">SCULPTURE</div>
+        <div class="title">クロデメキン / Black Moor</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="modal" id="modal" onclick="this.classList.remove('active')">
+  <img id="modal-img" src="" alt="">
+</div>
+
+<footer>
+  &copy; 2026 魚偏愛 〜ベタなベタ、時々ミノカサゴ〜
+</footer>
+
+<script>
+  function openModal(card) {
+    const src = card.querySelector('img').src;
+    document.getElementById('modal-img').src = src;
+    document.getElementById('modal').classList.add('active');
+  }
+</script>
+
+</body>
+</html>
