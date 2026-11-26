@@ -1,37 +1,33 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>魚偏愛 〜ベタなベタ、時々ミノカサゴ〜 | Abyssal Museum</title>
+  <title>魚偏愛 〜ベタなベタ、時々ミノカサゴ〜</title>
   <style>
     :root {
-      --bg-deep: #03060c;
-      --bg-abyss: #070d19;
-      --glass: rgba(12, 22, 38, 0.68);
-      --border: rgba(56, 189, 248, 0.24);
-      --border-glow: rgba(56, 189, 248, 0.8);
-      --text-main: #eaf4ff;
-      --text-sub: #7f9bb8;
-      --cyan: #38bdf8;
-      --violet: #818cf8;
+      --bg: #05080f;
+      --surface: rgba(10, 16, 28, 0.72);
+      --line: rgba(148, 184, 218, 0.18);
+      --line-hover: rgba(125, 211, 252, 0.55);
+      --text: #e6eef6;
+      --muted: #8899ad;
+      --accent: #7dd3fc;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
     body {
-      background: radial-gradient(circle at 50% 0%, #0d1f3c 0%, var(--bg-deep) 68%);
-      color: var(--text-main);
-      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
     }
 
-    /* 深海背景キャンバス */
-    #abyss-canvas {
+    #betta-canvas {
       position: fixed;
       inset: 0;
       width: 100%;
@@ -40,291 +36,219 @@
       pointer-events: none;
     }
 
-    /* 固定ヘッダーナビゲーション */
-    nav {
-      position: fixed;
+    .topbar {
+      position: sticky;
       top: 0;
-      width: 100%;
-      z-index: 50;
+      z-index: 20;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.85rem 1.8rem;
-      background: rgba(3, 6, 12, 0.75);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(56, 189, 248, 0.16);
+      padding: 1rem 1.8rem;
+      background: rgba(5, 8, 15, 0.68);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(148, 184, 218, 0.1);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.95rem;
-      letter-spacing: 0.14em;
-      color: var(--text-main);
-      font-weight: 600;
+    .site-mark {
+      color: var(--text);
       text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
     }
 
-    .brand-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan);
-    }
-
-    .brand span {
-      color: var(--cyan);
-      font-weight: 400;
-      font-size: 0.78rem;
-    }
-
-    .nav-right {
+    .top-actions {
       display: flex;
-      gap: 0.6rem;
       align-items: center;
+      gap: 0.9rem;
       flex-wrap: wrap;
     }
 
-    .nav-link {
-      color: var(--text-sub);
+    .top-link {
+      color: var(--muted);
       text-decoration: none;
       font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      padding: 0.35rem 0.6rem;
+      letter-spacing: 0.06em;
       transition: color 0.2s;
     }
 
-    .nav-link:hover { color: var(--cyan); }
+    .top-link:hover { color: var(--text); }
 
-    .pill-btn {
-      background: rgba(15, 28, 48, 0.85);
-      color: var(--text-main);
-      border: 1px solid var(--border);
-      padding: 0.38rem 0.85rem;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      letter-spacing: 0.06em;
+    .ghost-btn {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 0.32rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: border-color 0.2s, color 0.2s;
     }
 
-    .pill-btn:hover, .pill-btn.active {
-      border-color: var(--cyan);
-      box-shadow: 0 0 14px rgba(56, 189, 248, 0.45);
-      color: #fff;
+    .ghost-btn:hover, .ghost-btn.active {
+      color: var(--text);
+      border-color: var(--line-hover);
     }
 
-    /* ヒーローヘッダーエリア */
-    header {
+    header.hero {
       position: relative;
       z-index: 1;
-      min-height: 70vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 7.5rem 1.5rem 3.5rem;
-      border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5.5rem 1.5rem 3.5rem;
     }
 
-    .exhibition-badge {
-      font-size: 0.72rem;
-      letter-spacing: 0.28em;
-      color: var(--cyan);
-      text-transform: uppercase;
-      margin-bottom: 1.2rem;
-      padding: 0.35rem 1.1rem;
-      border: 1px solid rgba(56, 189, 248, 0.32);
-      border-radius: 999px;
-      background: rgba(56, 189, 248, 0.07);
-    }
-
-    header h1 {
-      font-size: clamp(1.7rem, 4.2vw, 3rem);
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      line-height: 1.4;
-      margin-bottom: 0.6rem;
-      text-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
-    }
-
-    header .en-sub {
-      font-size: 0.95rem;
-      letter-spacing: 0.2em;
-      color: var(--violet);
-      margin-bottom: 1.6rem;
-    }
-
-    header .concept {
-      max-width: 620px;
-      color: var(--text-sub);
-      font-size: 0.9rem;
-      line-height: 1.85;
-      margin-bottom: 2.2rem;
-    }
-
-    .social-dock {
-      display: flex;
-      gap: 0.85rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .social-dock a {
-      text-decoration: none;
-      color: var(--text-main);
-      padding: 0.58rem 1.3rem;
-      border-radius: 999px;
-      font-size: 0.82rem;
+    header.hero h1 {
+      font-size: clamp(1.65rem, 3.8vw, 2.55rem);
+      font-weight: 500;
       letter-spacing: 0.08em;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      transition: all 0.25s ease;
+      line-height: 1.45;
+      margin-bottom: 1rem;
     }
 
-    .social-dock a:hover {
-      border-color: var(--cyan);
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.45);
-      transform: translateY(-2px);
+    header.hero p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.9;
+      max-width: 580px;
+      margin-bottom: 1.8rem;
     }
 
-    .social-dock a.insta-active {
-      border-color: rgba(129, 140, 248, 0.6);
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(129, 140, 248, 0.22));
+    .links {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
-    /* 展示室メイン */
+    .links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      padding-bottom: 0.2rem;
+      border-bottom: 1px solid var(--line);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .links a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
     main {
       position: relative;
       z-index: 1;
-      max-width: 1180px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 3rem 1.5rem 6rem;
+      padding: 1.5rem 1.5rem 6rem;
     }
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1.8rem;
-      padding-bottom: 0.8rem;
-      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
-    }
-
-    .section-title {
-      font-size: 1.15rem;
-      letter-spacing: 0.08em;
-      border-left: 3px solid var(--cyan);
-      padding-left: 0.8rem;
+    .section-head {
+      margin: 3rem 0 1.4rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--muted);
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
-      gap: 1.6rem;
-      margin-bottom: 4.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+      gap: 1.4rem;
     }
 
     .card {
-      position: relative;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 0.85rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 0.7rem;
       cursor: pointer;
-      transform-style: preserve-3d;
-      transition: transform 0.15s ease-out, border-color 0.25s, box-shadow 0.25s;
-      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.25s ease;
     }
 
     .card:hover {
-      border-color: var(--border-glow);
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7), 0 0 24px rgba(56, 189, 248, 0.25);
+      transform: translateY(-3px);
+      border-color: var(--line-hover);
     }
 
     .frame-inner {
       width: 100%;
       aspect-ratio: 1 / 1;
-      border-radius: 9px;
+      border-radius: 4px;
       overflow: hidden;
       background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.35s ease;
+      transition: background 0.3s ease;
     }
 
-    /* 深海ネオン発光モード */
     body.abyss-glow .frame-inner.invertible {
-      background: #050912;
+      background: #060b14;
     }
+
     body.abyss-glow .frame-inner.invertible img {
-      filter: invert(1) hue-rotate(180deg) contrast(1.15) drop-shadow(0 0 10px rgba(56, 189, 248, 0.65));
+      filter: invert(1) hue-rotate(180deg) contrast(1.12);
     }
 
     .frame-inner img {
       width: 94%;
       height: 94%;
       object-fit: contain;
-      transition: transform 0.35s ease, filter 0.35s ease;
+      transition: transform 0.3s ease, filter 0.3s ease;
     }
 
     .card:hover .frame-inner img {
-      transform: scale(1.05);
+      transform: scale(1.03);
     }
 
     .card-info {
-      margin-top: 0.85rem;
-      padding: 0.55rem 0.75rem;
-      background: rgba(4, 8, 16, 0.72);
-      border-left: 2px solid var(--cyan);
-      border-radius: 0 6px 6px 0;
+      margin-top: 0.65rem;
+      padding: 0.15rem 0.25rem;
     }
 
     .card-info .day {
-      font-size: 0.72rem;
-      color: var(--cyan);
-      letter-spacing: 0.14em;
-      font-weight: bold;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
     }
 
     .card-info .title {
-      font-size: 0.92rem;
-      margin-top: 0.2rem;
-      color: var(--text-main);
+      font-size: 0.88rem;
+      margin-top: 0.15rem;
+      color: var(--text);
     }
 
-    /* 拡大表示モーダル */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(2, 5, 10, 0.9);
-      backdrop-filter: blur(12px);
+      background: rgba(3, 6, 12, 0.88);
+      backdrop-filter: blur(8px);
       justify-content: center;
       align-items: center;
       flex-direction: column;
       z-index: 100;
       padding: 1.5rem;
     }
+
     .modal.active { display: flex; }
 
     .modal-stage {
       background: #ffffff;
-      padding: 0.8rem;
-      border-radius: 12px;
-      box-shadow: 0 0 45px rgba(56, 189, 248, 0.35);
+      padding: 0.75rem;
+      border-radius: 6px;
     }
+
     body.abyss-glow .modal-stage.invertible {
-      background: #050912;
+      background: #060b14;
     }
+
     body.abyss-glow .modal-stage.invertible img {
-      filter: invert(1) hue-rotate(180deg) contrast(1.15) drop-shadow(0 0 14px rgba(56, 189, 248, 0.7));
+      filter: invert(1) hue-rotate(180deg) contrast(1.12);
     }
 
     .modal-stage img {
@@ -335,65 +259,59 @@
     }
 
     .modal-caption {
-      margin-top: 1rem;
-      font-size: 0.95rem;
-      color: var(--cyan);
-      letter-spacing: 0.08em;
+      margin-top: 0.9rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
     }
 
     footer {
       position: relative;
       z-index: 1;
-      text-align: center;
-      color: var(--text-sub);
-      font-size: 0.8rem;
-      padding: 2.5rem 1rem;
-      border-top: 1px solid rgba(56, 189, 248, 0.12);
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      border-top: 1px solid rgba(148, 184, 218, 0.1);
+      color: var(--muted);
+      font-size: 0.78rem;
     }
 
     @media (max-width: 640px) {
-      .nav-link { display: none; }
-      nav { padding: 0.8rem 1rem; }
+      .top-link { display: none; }
+      .topbar { padding: 0.9rem 1.1rem; }
+      header.hero { padding-top: 4rem; }
     }
   </style>
 </head>
 <body>
 
-<canvas id="abyss-canvas"></canvas>
+<canvas id="betta-canvas"></canvas>
 
-<nav>
-  <a href="#" class="brand">
-    <span class="brand-dot"></span>
-    魚偏愛 <span>ABYSSAL GALLERY</span>
-  </a>
-  <div class="nav-right">
-    <a href="#illustrations" class="nav-link">Illustrations</a>
-    <a href="#sculptures" class="nav-link">3D Sculptures</a>
-    <button class="pill-btn" id="glow-btn" onclick="toggleGlow()">照明: 原画マット</button>
-    <button class="pill-btn" onclick="toggleLang()">EN / JP</button>
+<nav class="topbar">
+  <a href="#" class="site-mark">魚偏愛</a>
+  <div class="top-actions">
+    <a href="#illustrations" class="top-link" id="nav-ill">1day1Betta</a>
+    <a href="#sculptures" class="top-link" id="nav-scu">Sculptures</a>
+    <button class="ghost-btn" id="glow-btn" onclick="toggleGlow()">照明: 原画マット</button>
+    <button class="ghost-btn" onclick="toggleLang()">EN / JP</button>
   </div>
 </nav>
 
-<header>
-  <div class="exhibition-badge">ABYSSAL ART ARCHIVE — 2026</div>
+<header class="hero">
   <h1 id="hero-title">魚偏愛 〜ベタなベタ、時々ミノカサゴ〜</h1>
-  <p class="en-sub">1day1Betta &amp; Translucent Aquatic Sculptures</p>
-  <p class="concept" id="hero-bio">
-    魚とヒレの造形美を偏愛するクリエイターの記録。<br>
-    毎日1匹ベタを描く「#1day1Betta」と、透明樹脂粘土・すけるくんを用いた立体作品を展示しています。
+  <p id="hero-bio">
+    ヒレの膜の重なりや輪郭の揺れに惹かれて描いた日々のベタと、すけるくんや樹脂粘土で作った立体物の置き場。
   </p>
-  <div class="social-dock">
-    <a href="https://www.instagram.com/uz_mz_rern" target="_blank" rel="noopener noreferrer" class="insta-active">Instagram</a>
+  <div class="links">
+    <a href="https://www.instagram.com/uz_mz_rern" target="_blank" rel="noopener noreferrer">Instagram</a>
     <a href="#" target="_blank">YouTube</a>
     <a href="#" target="_blank">TikTok</a>
-    <a href="#" target="_blank" id="shop-btn">Commission / Shop</a>
+    <a href="#" target="_blank" id="shop-link">Commission / Shop</a>
   </div>
 </header>
 
 <main>
-  <div class="section-header" id="illustrations">
-    <h2 class="section-title">#1day1Betta — Daily Illustrations</h2>
-  </div>
+  <h2 class="section-head" id="illustrations">#1day1Betta</h2>
   <div class="grid">
     <div class="card" onclick="openModal(this, true)">
       <div class="frame-inner invertible"><img src="images/day1.png" alt="Day 1 Betta"></div>
@@ -439,9 +357,7 @@
     </div>
   </div>
 
-  <div class="section-header" id="sculptures">
-    <h2 class="section-title">3D Sculptures — Clay &amp; Translucent Resin</h2>
-  </div>
+  <h2 class="section-head" id="sculptures">Sculptures</h2>
   <div class="grid">
     <div class="card" onclick="openModal(this, false)">
       <div class="frame-inner"><img src="images/lionfish.jpg" alt="ミノカサゴ"></div>
@@ -471,6 +387,7 @@
   &copy; 2026 魚偏愛 〜ベタなベタ、時々ミノカサゴ〜
 </footer>
 
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 <script>
   let lang = "ja";
 
@@ -491,7 +408,7 @@
     const btn = document.getElementById("glow-btn");
     btn.classList.toggle("active", isGlow);
     btn.textContent = isGlow
-      ? (lang === "ja" ? "照明: 深海発光" : "Light: Abyss Glow")
+      ? (lang === "ja" ? "照明: 深海発光" : "Light: Abyss")
       : (lang === "ja" ? "照明: 原画マット" : "Light: Matte");
   }
 
@@ -499,69 +416,209 @@
     lang = lang === "ja" ? "en" : "ja";
     document.getElementById("hero-title").textContent = lang === "ja"
       ? "魚偏愛 〜ベタなベタ、時々ミノカサゴ〜"
-      : "GYOHENAI — Bettas & Lionfish Gallery";
-    document.getElementById("hero-bio").innerHTML = lang === "ja"
-      ? "魚とヒレの造形美を偏愛するクリエイターの記録。<br>毎日1匹ベタを描く「#1day1Betta」と、透明樹脂粘土・すけるくんを用いた立体作品を展示しています。"
-      : "A digital archive celebrating the beauty of fish fins and skeletal forms.<br>Featuring daily #1day1Betta sketches and translucent clay aquatic sculptures.";
+      : "GYOHENAI — Bettas & Lionfish";
+    document.getElementById("hero-bio").textContent = lang === "ja"
+      ? "ヒレの膜の重なりや輪郭の揺れに惹かれて描いた日々のベタと、すけるくんや樹脂粘土で作った立体物の置き場。"
+      : "Daily bettas drawn for the overlap of fins and contours, alongside translucent clay and resin sculptures.";
     const isGlow = document.body.classList.contains("abyss-glow");
     document.getElementById("glow-btn").textContent = isGlow
-      ? (lang === "ja" ? "照明: 深海発光" : "Light: Abyss Glow")
+      ? (lang === "ja" ? "照明: 深海発光" : "Light: Abyss")
       : (lang === "ja" ? "照明: 原画マット" : "Light: Matte");
   }
 
-  // 3Dチルトエフェクト
-  document.querySelectorAll(".card").forEach(card => {
-    card.addEventListener("mousemove", e => {
-      const r = card.getBoundingClientRect();
-      const rx = ((e.clientY - r.top) / r.height - 0.5) * -10;
-      const ry = ((e.clientX - r.left) / r.width - 0.5) * 10;
-      card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+  // Three.js 背景: ヒレが波打ちながら泳ぐ3Dベタ
+  (function init3DBetta() {
+    const canvas = document.getElementById("betta-canvas");
+    if (!window.THREE || !canvas) return;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0.4, 7.2);
+
+    const ambient = new THREE.AmbientLight(0x88b4dc, 0.85);
+    scene.add(ambient);
+
+    const keyLight = new THREE.DirectionalLight(0xa5f3fc, 1.35);
+    keyLight.position.set(3, 5, 6);
+    scene.add(keyLight);
+
+    const rimLight = new THREE.DirectionalLight(0x6366f1, 0.75);
+    rimLight.position.set(-4, -3, -4);
+    scene.add(rimLight);
+
+    const bettaGroup = new THREE.Group();
+    scene.add(bettaGroup);
+
+    // 共通頂点シェーダー: 胴体のくねりとヒレの波打ち
+    function createSwimMaterial(colorHex, opacity, isFin) {
+      return new THREE.ShaderMaterial({
+        transparent: opacity < 0.99,
+        depthWrite: opacity >= 0.99,
+        side: THREE.DoubleSide,
+        uniforms: {
+          uTime: { value: 0 },
+          uColor: { value: new THREE.Color(colorHex) },
+          uOpacity: { value: opacity },
+          uIsFin: { value: isFin ? 1.0 : 0.0 }
+        },
+        vertexShader: `
+          uniform float uTime;
+          uniform float uIsFin;
+          varying vec3 vNormal;
+          varying vec3 vViewPos;
+          varying float vTailFactor;
+
+          void main() {
+            vec3 pos = position;
+            // 頭側(+X)から尾側(-X)へ向かって波が大きくなる係数
+            float tailWeight = clamp((1.1 - pos.x) / 3.8, 0.0, 1.0);
+            float bodyWave = sin(uTime * 3.4 - pos.x * 2.2) * 0.14 * pow(tailWeight, 1.4);
+            pos.z += bodyWave;
+
+            if (uIsFin > 0.5) {
+              float finRipple = sin(uTime * 5.2 - pos.x * 3.4 + pos.y * 4.0) * 0.12 * tailWeight;
+              pos.z += finRipple;
+              pos.y += cos(uTime * 3.8 - pos.x * 2.5) * 0.04 * tailWeight;
+            }
+
+            vTailFactor = tailWeight;
+            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+            vViewPos = -mvPosition.xyz;
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * mvPosition;
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor;
+          uniform float uOpacity;
+          uniform float uIsFin;
+          varying vec3 vNormal;
+          varying vec3 vViewPos;
+          varying float vTailFactor;
+
+          void main() {
+            vec3 normal = normalize(vNormal);
+            vec3 viewDir = normalize(vViewPos);
+            float fresnel = pow(1.0 - abs(dot(normal, viewDir)), 2.2);
+            vec3 finTint = mix(uColor, vec3(0.49, 0.83, 0.99), vTailFactor * 0.45 + fresnel * 0.35);
+            float alpha = uIsFin > 0.5 ? uOpacity * (0.72 + 0.28 * vTailFactor) : uOpacity;
+            gl_FragColor = vec4(finTint, alpha);
+          }
+        `
+      });
+    }
+
+    // 1. 胴体（流線型の引き伸ばし球）
+    const bodyGeo = new THREE.SphereGeometry(0.45, 36, 24);
+    bodyGeo.scale(2.35, 0.85, 0.52);
+    const bodyMat = createSwimMaterial(0x1e3a5f, 0.96, false);
+    const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+    bettaGroup.add(bodyMesh);
+
+    // 2. 尾ビレ（ハーフムーン風に扇状に広がるヒレ）
+    const tailGeo = new THREE.PlaneGeometry(1.55, 1.65, 28, 28);
+    const tailPos = tailGeo.attributes.position;
+    for (let i = 0; i < tailPos.count; i++) {
+      const x = tailPos.getX(i); // -0.775 .. +0.775
+      const y = tailPos.getY(i); // -0.825 .. +0.825
+      const t = (x + 0.775) / 1.55; // 0(根元) -> 1(外縁)
+      const fanY = y * (0.35 + 1.15 * t);
+      const archX = -1.05 - t * 1.15 + Math.cos((y / 0.825) * Math.PI * 0.5) * 0.22 * t;
+      tailPos.setXYZ(i, archX, fanY, 0);
+    }
+    tailGeo.computeVertexNormals();
+    const tailMat = createSwimMaterial(0x38bdf8, 0.52, true);
+    const tailMesh = new THREE.Mesh(tailGeo, tailMat);
+    bettaGroup.add(tailMesh);
+
+    // 3. 背ビレ
+    const dorsalGeo = new THREE.PlaneGeometry(1.45, 0.82, 24, 14);
+    const dPos = dorsalGeo.attributes.position;
+    for (let i = 0; i < dPos.count; i++) {
+      const x = dPos.getX(i);
+      const y = dPos.getY(i);
+      const h = (y + 0.41) / 0.82;
+      dPos.setXYZ(i, x - 0.35 - h * 0.35, 0.28 + h * 0.72, 0);
+    }
+    dorsalGeo.computeVertexNormals();
+    const dorsalMat = createSwimMaterial(0x60a5fa, 0.46, true);
+    const dorsalMesh = new THREE.Mesh(dorsalGeo, dorsalMat);
+    bettaGroup.add(dorsalMesh);
+
+    // 4. 尻ビレ
+    const analGeo = new THREE.PlaneGeometry(1.65, 0.78, 24, 14);
+    const aPos = analGeo.attributes.position;
+    for (let i = 0; i < aPos.count; i++) {
+      const x = aPos.getX(i);
+      const y = aPos.getY(i);
+      const d = (0.39 - y) / 0.78;
+      aPos.setXYZ(i, x - 0.55 - d * 0.35, -0.26 - d * 0.72, 0);
+    }
+    analGeo.computeVertexNormals();
+    const analMesh = new THREE.Mesh(analGeo, dorsalMat);
+    bettaGroup.add(analMesh);
+
+    // 5. 胸ビレ（左右）
+    const pecGeo = new THREE.PlaneGeometry(0.68, 0.42, 12, 8);
+    const pecMat = createSwimMaterial(0xbae6fd, 0.42, true);
+    const leftPec = new THREE.Mesh(pecGeo, pecMat);
+    leftPec.position.set(0.45, -0.14, 0.26);
+    leftPec.rotation.set(0.3, -0.4, -0.35);
+    bettaGroup.add(leftPec);
+
+    const rightPec = new THREE.Mesh(pecGeo, pecMat);
+    rightPec.position.set(0.45, -0.14, -0.26);
+    rightPec.rotation.set(-0.3, 0.4, -0.35);
+    bettaGroup.add(rightPec);
+
+    bettaGroup.scale.setScalar(0.85);
+
+    let pointerX = 0;
+    let pointerY = 0;
+    window.addEventListener("pointermove", e => {
+      pointerX = (e.clientX / window.innerWidth - 0.5) * 2;
+      pointerY = -(e.clientY / window.innerHeight - 0.5) * 2;
     });
-    card.addEventListener("mouseleave", () => {
-      card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0)";
+
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     });
-  });
 
-  // 深海パーティクルアニメーション
-  const canvas = document.getElementById("abyss-canvas");
-  const ctx = canvas.getContext("2d");
-  let w, h, dots = [];
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
 
-  function initCanvas() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-    dots = Array.from({ length: Math.min(55, Math.floor(w / 24)) }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: Math.random() * 2 + 0.6,
-      vy: -(Math.random() * 0.3 + 0.1),
-      a: Math.random() * 0.5 + 0.15
-    }));
-  }
+      bodyMat.uniforms.uTime.value = t;
+      tailMat.uniforms.uTime.value = t;
+      dorsalMat.uniforms.uTime.value = t;
+      pecMat.uniforms.uTime.value = t;
 
-  function loop(t) {
-    ctx.clearRect(0, 0, w, h);
-    const g = ctx.createRadialGradient(w * 0.5, -80, 40, w * 0.5, h * 0.25, w * 0.7);
-    g.addColorStop(0, "rgba(56, 189, 248, 0.1)");
-    g.addColorStop(1, "rgba(3, 6, 12, 0)");
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, w, h);
+      // ゆっくりとした回遊軌道＋カーソルへの緩やかな追従
+      const orbitX = Math.cos(t * 0.24) * 2.2 + pointerX * 0.7;
+      const orbitY = Math.sin(t * 0.42) * 0.85 + pointerY * 0.55;
+      const orbitZ = Math.sin(t * 0.24) * 1.1;
 
-    dots.forEach(d => {
-      d.x += Math.sin(t * 0.001 + d.y * 0.01) * 0.15;
-      d.y += d.vy;
-      if (d.y < -10) { d.y = h + 10; d.x = Math.random() * w; }
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(56, 189, 248, ${d.a})`;
-      ctx.fill();
-    });
-    requestAnimationFrame(loop);
-  }
+      const dx = -Math.sin(t * 0.24) * 2.2 * 0.24;
+      const dy = Math.cos(t * 0.42) * 0.85 * 0.42;
+      const dz = Math.cos(t * 0.24) * 1.1 * 0.24;
 
-  window.addEventListener("resize", initCanvas);
-  initCanvas();
-  requestAnimationFrame(loop);
+      bettaGroup.position.set(orbitX, orbitY, orbitZ);
+      const heading = Math.atan2(-dz, dx);
+      bettaGroup.rotation.y = heading;
+      bettaGroup.rotation.z = Math.sin(t * 3.4) * 0.04 + dy * 0.25;
+      bettaGroup.rotation.x = Math.cos(t * 0.42) * 0.08;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  })();
 </script>
 
 </body>
