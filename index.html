@@ -600,24 +600,25 @@
       dorsalMat.uniforms.uTime.value = t;
       pecMat.uniforms.uTime.value = t;
 
-      // ゆっくりとした回遊軌道＋カーソルへの緩やかな追従
-      const orbitX = Math.cos(t * 0.24) * 2.2 + pointerX * 0.7;
-      const orbitY = Math.sin(t * 0.42) * 0.85 + pointerY * 0.55;
-      const orbitZ = Math.sin(t * 0.24) * 1.1;
+      // カーソル非連動：時間だけで決まる一定の回遊軌道
+      const orbitX = Math.cos(t * 0.22) * 2.4;
+      const orbitY = Math.sin(t * 0.37) * 0.95;
+      const orbitZ = Math.sin(t * 0.22) * 1.1;
 
-      const dx = -Math.sin(t * 0.24) * 2.2 * 0.24;
-      const dy = Math.cos(t * 0.42) * 0.85 * 0.42;
-      const dz = Math.cos(t * 0.24) * 1.1 * 0.24;
+      const dx = -Math.sin(t * 0.22) * 2.4 * 0.22;
+      const dy = Math.cos(t * 0.37) * 0.95 * 0.37;
+      const dz = Math.cos(t * 0.22) * 1.1 * 0.22;
 
       bettaGroup.position.set(orbitX, orbitY, orbitZ);
       const heading = Math.atan2(-dz, dx);
       bettaGroup.rotation.y = heading;
       bettaGroup.rotation.z = Math.sin(t * 3.4) * 0.04 + dy * 0.25;
-      bettaGroup.rotation.x = Math.cos(t * 0.42) * 0.08;
+      bettaGroup.rotation.x = Math.cos(t * 0.37) * 0.08;
 
       renderer.render(scene, camera);
     }
     animate();
+  })();
   })();
 </script>
 
